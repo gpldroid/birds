@@ -1,0 +1,20 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+export async function getStaticPaths(){
+ const articles=await getCollection("blog",({data})=>data.language==="ar");
+ return articles.map((article)=>({params:{slug:article.id.split("/").pop()?.replace(/\.md$/,"")??article.id},props:{article}}));
+}
+const {article}=Astro.props;
+const {Content}=await render(article);
+const item=article.data;
+---
+<BaseLayout title={item.title} description={item.description} image={item.cover} type="article">
+ <div class="container article-page" dir="rtl">
+  <nav class="breadcrumbs" aria-label="مسار الصفحة"><a href="/ar/">الرئيسية</a><span>/</span><a href="/ar/articles/">المقالات</a><span>/</span><span>{item.category}</span></nav>
+  <header class="article-header"><a class="eyebrow" href="/ar/articles/">{item.category}</a><h1>{item.title}</h1><p class="article-deck">{item.description}</p><div class="byline"><span>بقلم {item.author}</span><span>·</span><time datetime={item.publishedAt.toISOString()}>{item.publishedAt.toLocaleDateString("ar", {year:"numeric",month:"long",day:"numeric"})}</time><span>·</span><span>{item.readTime} دقائق للقراءة</span></div></header>
+  <img class="article-hero-image" src={item.cover} alt={item.title} />
+  <div class="article-reading-layout"><aside class="article-aside"><span>في هذا المقال</span><a href="#article-content">قراءة المقال</a><a href="/ar/articles/">مقالات أخرى</a></aside><article class="prose" id="article-content"><Content /></article></div>
+  <div class="article-end"><span class="eyebrow">تابع الاستكشاف</span><h2>اكتشف المزيد عن عالم الطيور.</h2><a class="button button-dark" href="/ar/articles/">كل المقالات <span>↗</span></a></div>
+ </div>
+</BaseLayout>
