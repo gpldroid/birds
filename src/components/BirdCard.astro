@@ -5,8 +5,9 @@ const { bird, lang = "en" } = Astro.props;
 const name = lang === "ar" && bird.data.nameAr ? bird.data.nameAr : bird.data.name;
 const summary = lang === "ar" && bird.data.summaryAr ? bird.data.summaryAr : bird.data.summary;
 const slug = bird.id.replace(/\.md$/, "");
+const conservationLabel = lang === "ar" && bird.data.conservationStatus === "Least Concern" ? "غير مهدد (أقل قلقاً)" : bird.data.conservationStatus;
 ---
 <article class="bird-card searchable-item" data-search={`${bird.data.name} ${bird.data.nameAr} ${bird.data.scientificName} ${bird.data.family} ${bird.data.habitat} ${bird.data.habitatAr} ${bird.data.diet} ${bird.data.dietAr}`.toLowerCase()}>
-  <a class="bird-card-image" href={lang === "ar" ? `/ar/birds/${slug}/` : `/birds/${slug}/`}><img src={bird.data.image} alt={name} loading="lazy" /><span class="bird-status">{bird.data.conservationStatus}</span></a>
+  <a class="bird-card-image" href={lang === "ar" ? `/ar/birds/${slug}/` : `/birds/${slug}/`}><img src={bird.data.image} alt={name} loading="lazy" /><span class="bird-status">{conservationLabel}</span></a>
   <div class="bird-card-copy"><span class="eyebrow">{bird.data.scientificName}</span><h3><a href={lang === "ar" ? `/ar/birds/${slug}/` : `/birds/${slug}/`}>{name}</a></h3><p>{summary}</p><a class="text-link" href={lang === "ar" ? `/ar/birds/${slug}/` : `/birds/${slug}/`}>{lang === "ar" ? "اكتشف الطائر" : "Discover this bird"} <span>↗</span></a></div>
 </article>
