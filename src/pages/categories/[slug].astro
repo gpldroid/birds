@@ -1,0 +1,16 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ArticleCard from "../../components/ArticleCard.astro";
+export async function getStaticPaths() {
+  const articles = await getCollection("blog");
+  const categories = [...new Map(articles.map((article) => [article.data.categorySlug, article.data.category])).entries()];
+  return categories.map(([slug, name]) => ({ params: { slug }, props: { name, articles: articles.filter((article) => article.data.categorySlug === slug) } }));
+}
+const { name, articles } = Astro.props;
+const sorted = articles.sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+---
+<BaseLayout title={name} description={`Explore BIRDS stories about ${name.toLowerCase()}.`}>
+  <section class="page-intro container"><span class="eyebrow">EXPLORE A CATEGORY</span><h1>{name}<span class="brand-period">.</span></h1><p>Discover stories, insights and guides from this corner of the bird world.</p></section>
+  <section class="container listing-section"><div class="listing-topline"><span>{sorted.length} STORIES</span><a class="text-link" href="/articles/">All articles ↗</a></div><div class="article-grid">{sorted.map((article) => <ArticleCard article={article} />)}</div></section>
+</BaseLayout>
