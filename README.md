@@ -80,3 +80,40 @@ This repository is configured for `https://gpldroid.github.io/birds/` with site 
 
 ## Contributing and license
 Contributions are welcome. Verify species facts with reputable ornithological and conservation sources. The project is licensed under MIT; see [LICENSE](LICENSE).
+
+
+## Content management with Decap CMS
+
+The editorial interface is available at `/birds/admin/` after deployment. It manages two Git-backed collections:
+
+- **Articles** → `src/content/blog/`
+- **Bird Encyclopedia** → `src/content/birds/`
+
+Images uploaded through the CMS are committed to `public/images/uploads/` and served from `/birds/images/uploads/`. The Astro Zod schemas validate CMS-created frontmatter during every build.
+
+### Local CMS development
+
+Run the Astro site and Decap's local proxy in two terminals:
+
+```bash
+npm run dev
+npx decap-server
+```
+
+Open `http://localhost:4321/birds/admin/` (Astro's base path is `/birds`). With `local_backend: true`, the local proxy writes to your working tree. Review the Markdown changes and use Git normally.
+
+### Production GitHub authentication
+
+GitHub Pages serves static files and does not provide the OAuth server required by Decap's GitHub backend. Do not put a GitHub OAuth client secret or personal access token in `public/`, `config.yml`, browser JavaScript, or any committed file.
+
+To enable production sign-in:
+
+1. Create a GitHub OAuth App for the Avian World CMS. Set its callback URL to the callback endpoint of your OAuth proxy.
+2. Deploy a small OAuth proxy (for example, the official Decap Cloudflare Worker template) on a separate Worker domain.
+3. Store the OAuth client secret as a Worker secret, never in this repository.
+4. Uncomment and set `backend.base_url` and `backend.auth_endpoint` in `public/admin/config.yml` to the deployed proxy URL and its auth path.
+5. Keep repository write access restricted to trusted editors.
+
+Until these OAuth values are configured, the production admin page is installed but GitHub sign-in is not active. Local editing remains available through `npx decap-server`.
+
+See the [Decap GitHub backend guide](https://decapcms.org/docs/github-backend/) and [backend overview](https://decapcms.org/docs/backends-overview/).

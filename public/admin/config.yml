@@ -1,0 +1,83 @@
+backend:
+  name: github
+  repo: gpldroid/birds
+  branch: main
+  use_graphql: true
+  # Configure these after deploying the GitHub OAuth proxy:
+  # base_url: https://YOUR-OAUTH-WORKER.workers.dev
+  # auth_endpoint: auth
+
+site_url: https://gpldroid.github.io/birds
+display_url: https://gpldroid.github.io/birds
+logo_url: https://gpldroid.github.io/birds/favicon.svg
+
+local_backend: true
+publish_mode: simple
+
+media_folder: public/images/uploads
+public_folder: /birds/images/uploads
+
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: "-"
+
+collections:
+  - name: blog
+    label: Articles
+    label_singular: Article
+    folder: src/content/blog
+    create: true
+    extension: md
+    format: frontmatter
+    slug: "{{slug}}"
+    summary: "{{title}} — {{publishedAt}}"
+    sortable_fields: [publishedAt, title]
+    fields:
+      - { label: Title, name: title, widget: string }
+      - { label: Meta Description, name: description, widget: text }
+      - { label: Category, name: category, widget: string }
+      - { label: Category Slug, name: categorySlug, widget: string, hint: "Lowercase URL slug, for example bird-care." }
+      - { label: Publication Date, name: publishedAt, widget: datetime, date_format: "YYYY-MM-DD", time_format: false, format: "YYYY-MM-DD" }
+      - { label: Author, name: author, widget: string, default: "Avian World Editorial Team" }
+      - { label: Cover Image, name: cover, widget: image }
+      - { label: Featured Article, name: featured, widget: boolean, default: false }
+      - { label: Reading Time (minutes), name: readTime, widget: number, value_type: int, min: 1, max: 90, default: 5 }
+      - { label: Tags, name: tags, widget: list, required: false, max: 12 }
+      - { label: Related Bird Slugs, name: relatedBirds, widget: list, required: false, max: 12, hint: "Use bird filenames without .md, for example peregrine-falcon." }
+      - { label: Related Article Slugs, name: relatedArticles, widget: list, required: false, max: 12, hint: "Use article filenames without .md." }
+      - { label: Language, name: language, widget: hidden, default: en }
+      - { label: Article Body, name: body, widget: markdown }
+
+  - name: birds
+    label: Bird Encyclopedia
+    label_singular: Bird Profile
+    folder: src/content/birds
+    create: true
+    extension: md
+    format: frontmatter
+    slug: "{{slug}}"
+    summary: "{{commonName}} — {{scientificName}}"
+    sortable_fields: [commonName, scientificName]
+    fields:
+      - { label: Common Name, name: commonName, widget: string }
+      - { label: Scientific Name, name: scientificName, widget: string }
+      - { label: Family, name: family, widget: string }
+      - { label: Order, name: order, widget: string }
+      - { label: Short Description, name: description, widget: text }
+      - { label: Habitat, name: habitat, widget: list }
+      - { label: Diet, name: diet, widget: list }
+      - { label: Geographic Range, name: range, widget: text }
+      - { label: Body Size, name: size, widget: string }
+      - { label: Wingspan, name: wingspan, widget: string, required: false }
+      - label: Conservation Status
+        name: conservationStatus
+        widget: select
+        options: ["Least Concern", "Near Threatened", "Vulnerable", "Endangered", "Critically Endangered", "Extinct in the Wild", "Extinct", "Data Deficient", "Not Evaluated"]
+      - { label: Cover Image, name: cover, widget: image }
+      - { label: Featured Species, name: featured, widget: boolean, default: false }
+      - { label: Related Bird Slugs, name: relatedBirds, widget: list, required: false, max: 12 }
+      - { label: Related Article Slugs, name: relatedArticles, widget: list, required: false, max: 12 }
+      - { label: Tags, name: tags, widget: list, required: false, max: 12 }
+      - { label: Language, name: language, widget: hidden, default: en }
+      - { label: Species Article, name: body, widget: markdown }
