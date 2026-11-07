@@ -13,7 +13,8 @@ const blog = defineCollection({
     cover: z.string().url(),
     featured: z.boolean().default(false),
     readTime: z.number().int().min(1).max(90).default(5),
-    tags: z.array(z.string().trim().min(1).max(30)).max(12).default([])
+    tags: z.array(z.string().trim().min(1).max(30)).max(12).default([]),
+    language: z.literal("en").default("en")
   }).strict()
 });
 export const collections = { blog };
