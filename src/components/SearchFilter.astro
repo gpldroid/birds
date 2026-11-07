@@ -1,13 +1,13 @@
 ---
-interface Props { placeholder?: string; label?: string; }
-const { placeholder = "Search birds and articles...", label = "Search" } = Astro.props;
+interface Props { placeholder?: string; label?: string; resultSuffix?: string; }
+const { placeholder = "Search birds and articles...", label = "Search", resultSuffix = "result(s)" } = Astro.props;
 ---
 <div class="search-filter" role="search">
   <label class="sr-only" for="site-search">{label}</label>
   <span aria-hidden="true">⌕</span>
   <input id="site-search" type="search" placeholder={placeholder} autocomplete="off" />
   <button type="button" id="clear-search" aria-label="Clear search">×</button>
-  <p class="search-count" id="search-count" aria-live="polite"></p>
+  <p class="search-count" id="search-count" aria-live="polite" data-result-suffix={resultSuffix}></p>
 </div>
 <script>
   const input = document.querySelector<HTMLInputElement>("#site-search");
@@ -22,7 +22,7 @@ const { placeholder = "Search birds and articles...", label = "Search" } = Astro
       item.hidden = !match;
       if (match) visible++;
     }
-    if (count) count.textContent = query ? `${visible} result(s)` : "";
+    if (count) count.textContent = query ? `${visible} ${count.dataset.resultSuffix ?? "result(s)"}` : "";
     if (clear) clear.hidden = !query;
   };
   input?.addEventListener("input", filter);
