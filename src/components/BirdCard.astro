@@ -1,0 +1,12 @@
+---
+import type { CollectionEntry } from "astro:content";
+interface Props { bird: CollectionEntry<"birds">; lang?: "en" | "ar"; }
+const { bird, lang = "en" } = Astro.props;
+const name = lang === "ar" && bird.data.nameAr ? bird.data.nameAr : bird.data.name;
+const summary = lang === "ar" && bird.data.summaryAr ? bird.data.summaryAr : bird.data.summary;
+const slug = bird.id.replace(/\.md$/, "");
+---
+<article class="bird-card searchable-item" data-search={`${bird.data.name} ${bird.data.nameAr} ${bird.data.scientificName} ${bird.data.family} ${bird.data.habitat}`.toLowerCase()}>
+  <a class="bird-card-image" href={lang === "ar" ? `/ar/birds/${slug}/` : `/birds/${slug}/`}><img src={bird.data.image} alt={name} loading="lazy" /><span class="bird-status">{bird.data.conservationStatus}</span></a>
+  <div class="bird-card-copy"><span class="eyebrow">{bird.data.scientificName}</span><h3><a href={lang === "ar" ? `/ar/birds/${slug}/` : `/birds/${slug}/`}>{name}</a></h3><p>{summary}</p><a class="text-link" href={lang === "ar" ? `/ar/birds/${slug}/` : `/birds/${slug}/`}>{lang === "ar" ? "اكتشف الطائر" : "Discover this bird"} <span>↗</span></a></div>
+</article>
