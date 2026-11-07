@@ -1,0 +1,32 @@
+---
+const navItems = [
+  { href: "/", label: "Home" },
+  { href: "/articles/", label: "Articles" },
+  { href: "/about/", label: "About" }
+];
+const currentPath = Astro.url.pathname;
+---
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="/" aria-label="BIRDS homepage">
+      <span class="brand-mark" aria-hidden="true">B</span>
+      <span>BIRDS<span class="brand-period">.</span></span>
+    </a>
+    <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="primary-nav">
+      <span></span><span></span>
+    </button>
+    <nav class="main-nav" id="primary-nav" aria-label="Main navigation">
+      {navItems.map((item) => <a class:list={[{ active: currentPath === item.href }, "nav-link"]} href={item.href}>{item.label}</a>)}
+      <a class="nav-cta" href="/articles/">Explore stories <span aria-hidden="true">↗</span></a>
+    </nav>
+  </div>
+</header>
+<script>
+  const toggle = document.querySelector<HTMLButtonElement>(".menu-toggle");
+  const nav = document.querySelector<HTMLElement>("#primary-nav");
+  toggle?.addEventListener("click", () => {
+    const expanded = toggle.getAttribute("aria-expanded") === "true";
+    toggle.setAttribute("aria-expanded", String(!expanded));
+    nav?.classList.toggle("is-open", !expanded);
+  });
+</script>
