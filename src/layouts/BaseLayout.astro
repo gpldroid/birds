@@ -10,9 +10,10 @@ interface Props {
   type?: "website" | "article";
 }
 const { title, description, image, type } = Astro.props;
+const isArabic = Astro.url.pathname.startsWith("/ar/");
 ---
 <!doctype html>
-<html lang={Astro.url.pathname.startsWith("/ar/") ? "ar" : "en"} dir={Astro.url.pathname.startsWith("/ar/") ? "rtl" : "ltr"}>
+<html lang={isArabic ? "ar" : "en"} dir={isArabic ? "rtl" : "ltr"}>
   <head>
     <meta charset="UTF-8" />
     <SEO title={title} description={description} image={image} type={type} />
@@ -24,8 +25,8 @@ const { title, description, image, type } = Astro.props;
     <Header />
     <main><slot /></main>
     <Footer />
-    <a class="scroll-bottom" href="#page-end" aria-label="Scroll to bottom">↓</a>
+    <a class="scroll-bottom" href="#page-end" aria-label={isArabic ? "الانتقال إلى أسفل الصفحة" : "Scroll to bottom"}>↓</a>
     <span id="page-end" class="page-end-anchor" aria-hidden="true"></span>
-    <a class="scroll-top" href="#top" aria-label="Scroll to top">↑</a>
+    <a class="scroll-top" href="#top" aria-label={isArabic ? "العودة إلى أعلى الصفحة" : "Scroll to top"}>↑</a>
   </body>
 </html>
