@@ -9,7 +9,7 @@ interface Props {
 const { title, description, image = "/images/og-cover.svg", type = "website", canonical } = Astro.props;
 const canonicalUrl = canonical ? new URL(canonical, Astro.site ?? Astro.url).toString() : Astro.url.href;
 const isArabic = Astro.url.pathname.startsWith("/ar/");
-const englishPath = isArabic ? (Astro.url.pathname.replace(/^\\/ar/, "") || "/") : Astro.url.pathname;
+const englishPath = isArabic ? (Astro.url.pathname.replace(/^\/ar/, "") || "/") : Astro.url.pathname;
 const arabicPath = `/ar${englishPath === "/" ? "/" : englishPath}`;
 ---
 <title>{title} | BIRDS</title>
