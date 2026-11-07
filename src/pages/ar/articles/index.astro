@@ -6,6 +6,6 @@ import SearchFilter from "../../../components/SearchFilter.astro";
 const articles=(await getCollection("blog",({data})=>data.language==="ar")).sort((a,b)=>b.data.publishedAt.valueOf()-a.data.publishedAt.valueOf());
 ---
 <BaseLayout title="المقالات" description="مقالات ودلائل عن الطيور والهجرة والعناية بها وسلوكها.">
- <section class="page-intro container" dir="rtl"><span class="eyebrow">مجلة BIRDS</span><h1>مقالات لعشاق <em>الطيور.</em></h1><p>معلومات ودلائل مبسطة عن عالم الطيور وسلوكها وموائلها والعناية بها.</p><SearchFilter placeholder="ابحث في المقالات والموضوعات..." label="البحث في المقالات" /></section>
+ <section class="page-intro container" dir="rtl"><span class="eyebrow">مجلة BIRDS</span><h1>مقالات لعشاق <em>الطيور.</em></h1><p>معلومات ودلائل مبسطة عن عالم الطيور وسلوكها وموائلها والعناية بها.</p><SearchFilter placeholder="ابحث في المقالات والموضوعات..." label="البحث في المقالات" resultSuffix="نتيجة" /></section>
  <section class="container listing-section" dir="rtl"><div class="listing-topline"><span>{articles.length} مقالات</span><span>الأحدث أولاً</span></div><div class="article-grid">{articles.map((article)=><ArticleCard article={article} />)}</div></section>
 </BaseLayout>
