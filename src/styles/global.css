@@ -25,3 +25,61 @@
 .theme-toggle{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--line);background:transparent;color:var(--ink);padding:9px 11px;font:inherit;font-size:11px;cursor:pointer}
 .theme-icon{font-size:15px;line-height:1}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}}
+
+/* Bird directory, global search and bilingual UI */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.search-filter{position:relative;display:flex;align-items:center;gap:12px;max-width:620px;margin-top:26px;padding:0 16px;background:#fff;border:1px solid var(--line);min-height:54px;color:var(--green)}
+.search-filter>span{font-size:25px;line-height:1}
+.search-filter input{flex:1;min-width:0;border:0;outline:0;background:transparent;color:var(--ink);font:inherit;font-size:13px}
+.search-filter input::placeholder{color:#8b958b}
+.search-filter button{border:0;background:transparent;color:var(--muted);font-size:23px;cursor:pointer}
+.search-filter button[hidden]{display:none}
+.search-count{position:absolute;top:100%;left:0;margin:7px 0 0;font-size:10px;color:var(--muted)}
+.bird-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:25px}
+.bird-card{background:#fff;border:1px solid var(--line);min-width:0;display:flex;flex-direction:column}
+.bird-card-image{display:block;position:relative;overflow:hidden;background:#e7ece4}
+.bird-card-image img{width:100%;height:225px;object-fit:cover;transition:transform .45s}
+.bird-card-image:hover img{transform:scale(1.04)}
+.bird-status{position:absolute;left:12px;bottom:12px;background:#f7f8f4;color:#365b43;padding:7px 10px;font-size:9px;font-weight:700;letter-spacing:.4px}
+.bird-card-copy{padding:20px;display:flex;flex-direction:column;align-items:flex-start;flex:1}
+.bird-card-copy h3{font:500 23px/1.3 var(--serif);margin:10px 0}
+.bird-card-copy p{font-size:12px;line-height:1.8;color:var(--muted);margin:0 0 17px}
+.bird-card-copy .text-link{margin-top:auto}
+.bird-category-filters{display:flex;gap:9px;flex-wrap:wrap;padding:20px 0}
+.category-filter{border:1px solid var(--line);background:transparent;color:var(--muted);padding:10px 14px;font:inherit;font-size:11px;cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.category-filter:hover,.category-filter.active{background:var(--green);border-color:var(--green);color:#fff}
+.bird-filter-item[hidden],.searchable-item[hidden]{display:none!important}
+.bird-detail-page{padding-bottom:40px}
+.bird-detail-heading{text-align:center;max-width:780px;margin:40px auto 35px}
+.bird-detail-heading h1{font:500 clamp(42px,6vw,68px)/1.1 var(--serif);margin:17px 0 8px}
+.scientific-name{font:italic 16px Georgia,serif;color:var(--muted);margin:0 0 15px}
+.bird-detail-summary{font-size:15px;line-height:1.8;color:var(--muted);max-width:680px;margin:0 auto}
+.bird-detail-image{width:100%;height:min(52vw,510px);object-fit:cover}
+.bird-facts-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);margin:55px 0 75px}
+.bird-fact{background:var(--paper);padding:32px}
+.bird-fact h2{font:500 25px var(--serif);margin:12px 0}
+.bird-fact p{font-size:13px;line-height:1.8;color:var(--muted)}
+.search-results-section{padding-bottom:100px}
+.search-results-section>h2{font:500 30px var(--serif);margin:20px 0 25px}
+.search-article-heading{padding-top:50px}
+.language-toggle{font-size:12px;font-weight:700;color:var(--green);border:1px solid var(--line);padding:9px 11px}
+:root[data-theme="dark"] .search-filter,:root[data-theme="dark"] .bird-card{background:#223328;border-color:#3c4e3e}
+:root[data-theme="dark"] .search-filter input{color:#e8eee7}
+:root[data-theme="dark"] .search-filter input::placeholder{color:#9eac9e}
+:root[data-theme="dark"] .bird-status{background:#1d2b21;color:#d8e7d0}
+:root[data-theme="dark"] .bird-card-copy p{color:#b6c1b5}
+:root[data-theme="dark"] .category-filter{color:#c3d0c2;border-color:#435344}
+:root[data-theme="dark"] .category-filter.active,:root[data-theme="dark"] .category-filter:hover{background:#9fbd93;color:#17221a;border-color:#9fbd93}
+:root[data-theme="dark"] .language-toggle{color:#c1d9b5;border-color:#465747}
+:root[data-theme="dark"] .bird-fact{background:#1d2b21}
+:root[data-theme="dark"] .bird-fact p{color:#b6c1b5}
+[dir="rtl"] .bird-card-copy{align-items:flex-start}
+[dir="rtl"] .bird-status{left:auto;right:12px}
+[dir="rtl"] .search-count{left:auto;right:0}
+[dir="rtl"] .article-reading-layout{direction:rtl}
+[dir="rtl"] .prose{direction:rtl;text-align:right}
+[dir="rtl"] .prose ul,[dir="rtl"] .prose ol{padding-left:0;padding-right:23px}
+[dir="rtl"] .prose blockquote{border-left:0;border-right:3px solid #9bad8e;padding:5px 22px 5px 0}
+[dir="rtl"] .article-aside{align-items:flex-start}
+@media(max-width:800px){.bird-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.bird-facts-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:600px){.bird-grid{grid-template-columns:1fr}.bird-card-image img{height:250px}.bird-facts-grid{grid-template-columns:1fr;margin:35px 0 50px}.bird-fact{padding:25px}.bird-detail-image{height:300px}.search-filter{min-height:50px}.language-toggle{align-self:flex-start}}
