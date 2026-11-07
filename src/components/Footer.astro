@@ -1,25 +1,15 @@
 ---
+import { withBase } from "../utils/site";
 const year = new Date().getFullYear();
-const isArabic = Astro.url.pathname.startsWith("/ar/");
 ---
-<footer class="site-footer" dir={isArabic ? "rtl" : "ltr"}>
+<footer class="site-footer">
   <div class="container footer-main">
     <div class="footer-brand">
-      <a class="brand brand-light" href={isArabic ? "/ar/" : "/"}><span class="brand-mark">B</span><span>BIRDS<span class="brand-period">.</span></span></a>
-      <p>{isArabic ? "موسوعة ومجلة تثري فضولك تجاه عالم الطيور والطبيعة." : "A thoughtful encyclopedia and journal for everyone who finds wonder in the world of birds."}</p>
+      <a class="brand brand-light" href={withBase("/")}><span class="brand-mark">A</span><span>AVIAN WORLD<span class="brand-period">.</span></span></a>
+      <p>An independent bird encyclopedia and journal for curious minds, careful observers and everyone who loves the natural world.</p>
     </div>
-    <div class="footer-links">
-      <span class="footer-heading">{isArabic ? "استكشف" : "Explore"}</span>
-      <a href={isArabic ? "/ar/birds/" : "/birds/"}>{isArabic ? "موسوعة الطيور" : "Bird directory"}</a>
-      <a href={isArabic ? "/ar/articles/" : "/articles/"}>{isArabic ? "المقالات" : "All articles"}</a>
-      <a href={isArabic ? "/ar/about/" : "/about/"}>{isArabic ? "من نحن" : "About BIRDS"}</a>
-    </div>
-    <div class="footer-links">
-      <span class="footer-heading">{isArabic ? "اكتشف" : "Discover"}</span>
-      <a href={isArabic ? "/ar/birds/" : "/birds/"}>{isArabic ? "الطيور الجارحة" : "Birds of prey"}</a>
-      <a href={isArabic ? "/ar/birds/" : "/birds/"}>{isArabic ? "الطيور المائية" : "Waterbirds"}</a>
-      <a href={isArabic ? "/ar/search/" : "/search/"}>{isArabic ? "البحث في الموقع" : "Search the site"}</a>
-    </div>
+    <div class="footer-links"><span class="footer-heading">Explore</span><a href={withBase("/")}>Home</a><a href={withBase("/blog/")}>All articles</a><a href={withBase("/about/")}>About the project</a></div>
+    <div class="footer-links"><span class="footer-heading">Discover</span><a href={withBase("/categories/raptors/")}>Birds of prey</a><a href={withBase("/categories/bird-species/")}>Bird species</a><a href="https://www.iucnredlist.org/" target="_blank" rel="noreferrer">Conservation resources ↗</a></div>
   </div>
-  <div class="container footer-bottom"><span>© {year} BIRDS Journal. {isArabic ? "جميع الحقوق محفوظة." : "All rights reserved."}</span><a href="#top">{isArabic ? "العودة للأعلى ↑" : "Back to top ↑"}</a></div>
+  <div class="container footer-bottom"><span>© {year} Avian World. All rights reserved.</span><a href="#top">Back to top ↑</a></div>
 </footer>

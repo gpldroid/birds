@@ -4,33 +4,29 @@ interface Props {
   description: string;
   image?: string;
   type?: "website" | "article";
-  canonical?: string;
+  publishedAt?: Date;
 }
-const { title, description, image = "/images/og-cover.svg", type = "website", canonical } = Astro.props;
-const canonicalPath = canonical ?? Astro.url.pathname;
-const canonicalUrl = Astro.site ? new URL(canonicalPath, Astro.site).toString() : canonicalPath;
-const isArabic = Astro.url.pathname.startsWith("/ar/");
-const englishPath = isArabic ? (Astro.url.pathname.replace(/^\/ar/, "") || "/") : Astro.url.pathname;
-const arabicPath = `/ar${englishPath === "/" ? "/" : englishPath}`;
+const { title, description, image = "/images/og-cover.svg", type = "website", publishedAt } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const canonicalUrl = new URL(`${base}${Astro.url.pathname}`, Astro.site).toString();
+const imagePath = image.startsWith("http") ? image : `${base}${image.startsWith("/") ? image : `/${image}`}`;
+const imageUrl = new URL(imagePath, Astro.site).toString();
 ---
-<title>{title} | BIRDS</title>
+<title>{title} | Avian World</title>
 <meta name="description" content={description} />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<meta name="theme-color" content="#f7f8f4" />
+<meta name="robots" content="index,follow,max-image-preview:large" />
 <link rel="canonical" href={canonicalUrl} />
-<link rel="alternate" hreflang="en" href={Astro.site ? new URL(englishPath, Astro.site).toString() : englishPath} />
-<link rel="alternate" hreflang="ar" href={Astro.site ? new URL(arabicPath, Astro.site).toString() : arabicPath} />
-<link rel="alternate" hreflang="x-default" href={new URL(englishPath, Astro.site ?? Astro.url).toString()} />
-<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+<link rel="icon" type="image/x-icon" href={`${base}/favicon.ico`} />
 <meta property="og:type" content={type} />
-<meta property="og:site_name" content="BIRDS" />
-<meta property="og:locale" content={isArabic ? "ar_AR" : "en_US"} />
-<meta property="og:locale:alternate" content={isArabic ? "en_US" : "ar_AR"} />
+<meta property="og:site_name" content="Avian World" />
+<meta property="og:locale" content="en_US" />
+<meta property="og:url" content={canonicalUrl} />
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
-<meta property="og:url" content={canonicalUrl} />
-<meta property="og:image" content={Astro.site ? new URL(image, Astro.site).toString() : image} />
+<meta property="og:image" content={imageUrl} />
+<meta property="og:image:alt" content={title} />
+{publishedAt && <meta property="article:published_time" content={publishedAt.toISOString()} />}
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
-<meta name="twitter:image" content={new URL(image, Astro.site ?? Astro.url).toString()} />
+<meta name="twitter:image" content={imageUrl} />

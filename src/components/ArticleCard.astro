@@ -1,15 +1,18 @@
 ---
 import type { CollectionEntry } from "astro:content";
+import { withBase } from "../utils/site";
 interface Props { article: CollectionEntry<"blog">; featured?: boolean; }
 const { article, featured = false } = Astro.props;
-const { title, description, category, categorySlug, cover, publishedAt, readTime, language, tags } = article.data;
-const prefix = language === "ar" ? "/ar" : "";
-const articleSlug = article.id.split("/").pop()?.replace(/\.md$/, "") ?? article.id;
-const articleHref = `${prefix}/articles/${articleSlug}/`;
-const categoryHref = language === "ar" ? `/ar/categories/${categorySlug}/` : `/categories/${categorySlug}/`;
-const date = publishedAt.toLocaleDateString(language === "ar" ? "ar" : "en", { month: "short", day: "numeric", year: "numeric" });
+const { title, description, category, categorySlug, cover, publishedAt, readTime, tags } = article.data;
+const slug = article.id.replace(/\.mdx?$/, "");
+const articleHref = withBase(`/blog/${slug}/`);
+const categoryHref = withBase(`/categories/${categorySlug}/`);
+const date = publishedAt.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
 ---
-<article class:list={["article-card", "searchable-item", { "article-card-featured": featured }]} data-search={`${title} ${description} ${category} ${tags.join(" ")}`.toLowerCase()}>
- <a class="article-image-link" href={articleHref} aria-label={language === "ar" ? `اقرأ ${title}` : `Read ${title}`}><img class="article-image" src={cover} alt={title} loading="lazy" /><span class="image-arrow" aria-hidden="true">↗</span></a>
- <div class="article-card-body"><div class="article-meta"><a href={categoryHref} class="category-label">{category}</a><span>{readTime} {language === "ar" ? "دقائق" : "min read"}</span></div><h3><a href={articleHref}>{title}</a></h3><p>{description}</p><time datetime={publishedAt.toISOString()}>{date}</time></div>
+<article class:list={["article-card", { "article-card-featured": featured }]}>
+  <a class="article-image-link" href={articleHref} aria-label={`Read ${title}`}><img class="article-image" src={cover} alt={title} loading="lazy" /><span class="image-arrow" aria-hidden="true">↗</span></a>
+  <div class="article-card-body">
+    <div class="article-meta"><a href={categoryHref} class="category-label">{category}</a><span>{readTime} min read</span></div>
+    <h3><a href={articleHref}>{title}</a></h3><p>{description}</p><time datetime={publishedAt.toISOString()}>{date}</time>
+  </div>
 </article>

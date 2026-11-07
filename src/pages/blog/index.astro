@@ -1,0 +1,10 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ArticleCard from "../../components/ArticleCard.astro";
+const posts=(await getCollection("blog")).sort((a,b)=>b.data.publishedAt.valueOf()-a.data.publishedAt.valueOf());
+---
+<BaseLayout title="The Journal" description="Read bird species profiles, field notes, practical guides and stories from the avian world.">
+  <section class="page-intro container"><span class="eyebrow">THE AVIAN WORLD JOURNAL</span><h1>Stories for the <em>bird-curious.</em></h1><p>Species profiles, field notes, practical guides and fascinating facts from across the avian world.</p></section>
+  <section class="container listing-section"><div class="listing-topline"><span>{posts.length} STORIES</span><span>NEWEST FIRST</span></div><div class="article-grid">{posts.map((post)=><ArticleCard article={post} />)}</div>{posts.length===0&&<p class="empty-state">No articles have been published yet.</p>}</section>
+</BaseLayout>

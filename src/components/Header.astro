@@ -1,20 +1,15 @@
 ---
-const isArabic = Astro.url.pathname.startsWith("/ar/");
-const navItems = isArabic
-  ? [{ href: "/ar/", label: "الرئيسية" }, { href: "/ar/birds/", label: "موسوعة الطيور" }, { href: "/ar/articles/", label: "المقالات" }, { href: "/ar/about/", label: "من نحن" }, { href: "/ar/search/", label: "بحث" }]
-  : [{ href: "/", label: "Home" }, { href: "/birds/", label: "Bird directory" }, { href: "/articles/", label: "Articles" }, { href: "/about/", label: "About" }, { href: "/search/", label: "Search" }];
-const currentPath = Astro.url.pathname;
-const languageHref = isArabic ? (currentPath.replace(/^\/ar/, "") || "/") : `/ar${currentPath === "/" ? "/" : currentPath}`;
+import { withBase } from "../utils/site";
+const navigation = [{ href: "/", label: "Home" }, { href: "/blog/", label: "Journal" }, { href: "/about/", label: "About" }];
+const currentPath = Astro.url.pathname.replace(import.meta.env.BASE_URL.replace(/\/$/, ""), "") || "/";
 ---
 <header class="site-header">
   <div class="container header-inner">
-    <a class="brand" href={isArabic ? "/ar/" : "/"} aria-label="BIRDS homepage"><span class="brand-mark" aria-hidden="true">B</span><span>BIRDS<span class="brand-period">.</span></span></a>
-    <button class="menu-toggle" type="button" aria-label={isArabic ? "فتح القائمة" : "Open navigation"} aria-expanded="false" aria-controls="primary-nav"><span></span><span></span></button>
-    <nav class="main-nav" id="primary-nav" aria-label="Main navigation">
-      {navItems.map((item) => <a class:list={[{ active: currentPath === item.href }, "nav-link"]} href={item.href}>{item.label}</a>)}
-      <button class="theme-toggle" type="button" aria-label="Switch theme" title="Toggle colour theme"><span class="theme-icon" aria-hidden="true">☾</span><span class="theme-label">{isArabic ? "المظهر" : "Theme"}</span></button>
-      <a class="language-toggle" href={languageHref} lang={isArabic ? "en" : "ar"}>{isArabic ? "EN" : "عربي"}</a>
-      <a class="nav-cta" href={isArabic ? "/ar/birds/" : "/birds/"}>{isArabic ? "اكتشف الطيور" : "Explore birds"} <span aria-hidden="true">↗</span></a>
+    <a class="brand" href={withBase("/")} aria-label="Avian World home"><span class="brand-mark" aria-hidden="true">A</span><span>AVIAN WORLD<span class="brand-period">.</span></span></a>
+    <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="primary-nav"><span></span><span></span></button>
+    <nav class="main-nav" id="primary-nav" aria-label="Primary navigation">
+      {navigation.map((item) => <a class:list={["nav-link", { active: currentPath === item.href }]} href={withBase(item.href)}>{item.label}</a>)}
+      <a class="nav-cta" href={withBase("/blog/")}>Explore the journal <span aria-hidden="true">↗</span></a>
     </nav>
   </div>
 </header>
@@ -25,20 +20,5 @@ const languageHref = isArabic ? (currentPath.replace(/^\/ar/, "") || "/") : `/ar
     const expanded = menuToggle.getAttribute("aria-expanded") === "true";
     menuToggle.setAttribute("aria-expanded", String(!expanded));
     nav?.classList.toggle("is-open", !expanded);
-  });
-  const themeToggle = document.querySelector<HTMLButtonElement>(".theme-toggle");
-  const themeIcon = document.querySelector<HTMLElement>(".theme-icon");
-  const applyTheme = (theme: "light" | "dark") => {
-    document.documentElement.dataset.theme = theme;
-    if (themeIcon) themeIcon.textContent = theme === "dark" ? "☀" : "☾";
-    themeToggle?.setAttribute("aria-label", theme === "dark" ? "Switch to light theme" : "Switch to dark theme");
-  };
-  let savedTheme: string | null = null;
-  try { savedTheme = localStorage.getItem("birds-theme"); } catch { savedTheme = null; }
-  applyTheme(savedTheme === "dark" || savedTheme === "light" ? savedTheme : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"));
-  themeToggle?.addEventListener("click", () => {
-    const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
-    applyTheme(nextTheme);
-    try { localStorage.setItem("birds-theme", nextTheme); } catch { /* Theme remains active for this visit. */ }
   });
 </script>
