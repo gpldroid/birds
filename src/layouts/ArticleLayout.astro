@@ -1,0 +1,24 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import type { CollectionEntry } from "astro:content";
+interface Props { article: CollectionEntry<"blog">; }
+const { article } = Astro.props;
+const { title, description, cover, category, categorySlug, publishedAt, author, readTime } = article.data;
+---
+<BaseLayout title={title} description={description} image={cover} type="article">
+  <div class="container article-page">
+    <nav class="breadcrumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/articles/">Articles</a><span>/</span><a href={`/categories/${categorySlug}/`}>{category}</a></nav>
+    <header class="article-header">
+      <a class="eyebrow" href={`/categories/${categorySlug}/`}>{category}</a>
+      <h1>{title}</h1>
+      <p class="article-deck">{description}</p>
+      <div class="byline"><span>By {author}</span><span>·</span><time datetime={publishedAt.toISOString()}>{publishedAt.toLocaleDateString("en", { month: "long", day: "numeric", year: "numeric" })}</time><span>·</span><span>{readTime} min read</span></div>
+    </header>
+    <img class="article-hero-image" src={cover} alt={title} />
+    <div class="article-reading-layout">
+      <aside class="article-aside"><span>IN THIS STORY</span><a href="#article-content">Read the article</a><a href="/articles/">More stories</a></aside>
+      <article class="prose" id="article-content"><slot /></article>
+    </div>
+    <div class="article-end"><span class="eyebrow">Keep exploring</span><h2>There’s always more to discover.</h2><a class="button button-dark" href="/articles/">Browse all articles <span>↗</span></a></div>
+  </div>
+</BaseLayout>
