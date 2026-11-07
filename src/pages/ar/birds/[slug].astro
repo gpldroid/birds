@@ -1,0 +1,19 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+export async function getStaticPaths(){
+ const birds=await getCollection("birds");
+ return birds.map((bird)=>({params:{slug:bird.id.replace(/\.md$/,"")},props:{bird}}));
+}
+const {bird}=Astro.props;
+const item=bird.data;
+---
+<BaseLayout title={item.nameAr||item.name} description={item.summaryAr||item.summary} image={item.image}>
+ <div class="container bird-detail-page" dir="rtl">
+  <nav class="breadcrumbs" aria-label="مسار الصفحة"><a href="/ar/">الرئيسية</a><span>/</span><a href="/ar/birds/">موسوعة الطيور</a><span>/</span><span>{item.nameAr||item.name}</span></nav>
+  <header class="bird-detail-heading"><span class="eyebrow">بطاقة تعريفية · {item.family}</span><h1>{item.nameAr||item.name}</h1><p class="scientific-name" dir="ltr">{item.scientificName}</p><p class="bird-detail-summary">{item.summaryAr||item.summary}</p></header>
+  <img class="bird-detail-image" src={item.image} alt={item.nameAr||item.name} />
+  <div class="bird-facts-grid"><section class="bird-fact"><span class="eyebrow">الموطن الطبيعي</span><h2>أين يعيش؟</h2><p>{item.habitatAr||item.habitat}</p></section><section class="bird-fact"><span class="eyebrow">الغذاء</span><h2>ماذا يأكل؟</h2><p>{item.dietAr||item.diet}</p></section><section class="bird-fact"><span class="eyebrow">حالة الحفظ</span><h2>{item.conservationStatus==="Least Concern"?"غير مهدد بالانقراض (أقل قلقاً)":item.conservationStatus}</h2><p>هذه الحالة وفق البيانات المسجلة لهذا النوع. راجع المرجع للاطلاع على أحدث تقييم عالمي أو إقليمي.</p>{item.conservationSource&&<a class="text-link" href={item.conservationSource} target="_blank" rel="noreferrer">مرجع حالة الحفظ ↗</a>}</section><section class="bird-fact"><span class="eyebrow">التصنيف</span><h2>{item.category==="raptors"?"الطيور الجارحة":item.category==="migratory"?"الطيور المهاجرة":item.category==="ornamental"?"طيور الزينة":item.category==="waterbirds"?"الطيور المائية":"طيور الطبيعة"}</h2><p>الفصيلة: {item.family}</p></section></div>
+  <div class="article-end"><span class="eyebrow">تابع الاستكشاف</span><h2>هناك دائماً طائر جديد لتتعرف عليه.</h2><a class="button button-dark" href="/ar/birds/">العودة إلى الموسوعة <span>↗</span></a></div>
+ </div>
+</BaseLayout>
