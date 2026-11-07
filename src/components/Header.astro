@@ -1,8 +1,7 @@
 ---
 const isArabic = Astro.url.pathname.startsWith("/ar/");
-const prefix = isArabic ? "/ar" : "";
 const navItems = isArabic
-  ? [{ href: "/ar/", label: "الرئيسية" }, { href: "/ar/birds/", label: "موسوعة الطيور" }, { href: "/ar/articles/", label: "المقالات" }, { href: "/ar/about/", label: "من نحن" }, { href: "/search/", label: "بحث" }]
+  ? [{ href: "/ar/", label: "الرئيسية" }, { href: "/ar/birds/", label: "موسوعة الطيور" }, { href: "/ar/articles/", label: "المقالات" }, { href: "/ar/about/", label: "من نحن" }, { href: "/ar/search/", label: "بحث" }]
   : [{ href: "/", label: "Home" }, { href: "/birds/", label: "Bird directory" }, { href: "/articles/", label: "Articles" }, { href: "/about/", label: "About" }, { href: "/search/", label: "Search" }];
 const currentPath = Astro.url.pathname;
 const languageHref = isArabic ? (currentPath.replace(/^\/ar/, "") || "/") : `/ar${currentPath === "/" ? "/" : currentPath}`;
