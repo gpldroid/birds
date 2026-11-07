@@ -6,7 +6,7 @@ const { title, description, category, categorySlug, cover, publishedAt, readTime
 const prefix = language === "ar" ? "/ar" : "";
 const articleSlug = article.id.split("/").pop()?.replace(/\.md$/, "") ?? article.id;
 const articleHref = `${prefix}/articles/${articleSlug}/`;
-const categoryHref = language === "ar" ? "/ar/articles/" : `/categories/${categorySlug}/`;
+const categoryHref = language === "ar" ? `/ar/categories/${categorySlug}/` : `/categories/${categorySlug}/`;
 const date = publishedAt.toLocaleDateString(language === "ar" ? "ar" : "en", { month: "short", day: "numeric", year: "numeric" });
 ---
 <article class:list={["article-card", "searchable-item", { "article-card-featured": featured }]} data-search={`${title} ${description} ${category} ${tags.join(" ")}`.toLowerCase()}>
