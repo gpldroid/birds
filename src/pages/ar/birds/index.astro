@@ -8,14 +8,14 @@ const categories = [{id:"nature",label:"طيور الطبيعة"},{id:"migratory
 ---
 <BaseLayout title="موسوعة الطيور" description="تعرّف على أنواع الطيور وموائلها وغذائها وحالة حفظها.">
   <section class="page-intro container" dir="rtl"><span class="eyebrow">دليل الأنواع</span><h1>موسوعة <em>الطيور.</em></h1><p>اكتشف أنواع الطيور من مختلف أنحاء العالم، وتعرّف على موائلها وغذائها وحالة حفظها.</p><SearchFilter placeholder="ابحث باسم الطائر أو اسمه العلمي أو موطنه..." label="بحث عن طائر" /></section>
-  <section class="container listing-section" dir="rtl"><div class="bird-category-filters"><button class="category-filter active" data-category="all">كل الطيور</button>{categories.map((category)=><button class="category-filter" data-category={category.id}>{category.label}</button>)}</div><div class="listing-topline"><span>{birds.length} أنواع</span><span>موسوعة الطيور</span></div><div class="bird-grid">{birds.map((bird)=><BirdCard bird={bird} lang="ar" />)}</div></section>
+  <section class="container listing-section" dir="rtl"><div class="bird-category-filters"><button class="category-filter active" data-category="all">كل الطيور</button>{categories.map((category)=><button class="category-filter" data-category={category.id}>{category.label}</button>)}</div><div class="listing-topline"><span>{birds.length} أنواع</span><span>موسوعة الطيور</span></div><div class="bird-grid">{birds.map((bird)=><div class="bird-filter-item" data-category={bird.data.category}><BirdCard bird={bird} lang="ar" /></div>)}</div></section>
   <script>
     const filters=[...document.querySelectorAll<HTMLButtonElement>(".category-filter")];
-    const cards=[...document.querySelectorAll<HTMLElement>(".bird-card")];
+    const cards=[...document.querySelectorAll<HTMLElement>(".bird-filter-item")];
     filters.forEach((button)=>button.addEventListener("click",()=>{
       filters.forEach((item)=>item.classList.toggle("active",item===button));
       const selected=button.dataset.category??"all";
-      cards.forEach((card)=>{const wrapper=card.closest(".bird-filter-item") as HTMLElement|null;const category=wrapper?.dataset.category??card.dataset.category??"";card.hidden=selected!=="all"&&category!==selected;});
+      cards.forEach((card)=>{card.hidden=selected!=="all"&&card.dataset.category!==selected;});
     }));
   </script>
 </BaseLayout>
