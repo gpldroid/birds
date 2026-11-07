@@ -1,0 +1,13 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import BirdCard from "../../components/BirdCard.astro";
+import ArticleCard from "../../components/ArticleCard.astro";
+import SearchFilter from "../../components/SearchFilter.astro";
+const birds = await getCollection("birds");
+const articles = await getCollection("blog", ({data}) => data.language === "en");
+---
+<BaseLayout title="Search" description="Search the BIRDS encyclopedia and journal articles.">
+  <section class="page-intro container"><span class="eyebrow">FIND SOMETHING WILD</span><h1>Search the <em>bird world.</em></h1><p>Search species, scientific names, habitats, articles and topics in one place.</p><SearchFilter placeholder="Try a bird name, habitat or topic..." /></section>
+  <section class="container search-results-section"><h2>Bird species</h2><div class="bird-grid">{birds.map((bird) => <BirdCard bird={bird} />)}</div><h2 class="search-article-heading">Journal articles</h2><div class="article-grid">{articles.map((article) => <ArticleCard article={article} />)}</div></section>
+</BaseLayout>
