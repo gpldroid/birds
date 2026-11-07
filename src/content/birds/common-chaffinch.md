@@ -1,6 +1,6 @@
 ---
 name: "Common Chaffinch"
-nameAr: "الحسون الظالم"
+nameAr: "الشرشور الشائع"
 scientificName: "Fringilla coelebs"
 family: "Fringillidae"
 habitat: "Woodlands, parks, gardens and hedgerows"
