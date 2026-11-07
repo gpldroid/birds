@@ -5,7 +5,7 @@ const { article, featured = false } = Astro.props;
 const { title, description, category, categorySlug, cover, publishedAt, readTime } = article.data;
 const date = publishedAt.toLocaleDateString("en", { month: "short", day: "numeric", year: "numeric" });
 ---
-<article class:list={["article-card", { "article-card-featured": featured }]}>
+<article class:list={["article-card", "searchable-item", { "article-card-featured": featured }]} data-search={`${title} ${description} ${category} ${article.data.tags.join(" ")}`.toLowerCase()}>
   <a class="article-image-link" href={`/articles/${article.id.replace(/\.md$/, "")}/`} aria-label={`Read ${title}`}>
     <img class="article-image" src={cover} alt={title} loading="lazy" />
     <span class="image-arrow" aria-hidden="true">↗</span>
