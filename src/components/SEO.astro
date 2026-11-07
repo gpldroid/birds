@@ -29,7 +29,7 @@ const arabicPath = `/ar${englishPath === "/" ? "/" : englishPath}`;
 <meta property="og:title" content={title} />
 <meta property="og:description" content={description} />
 <meta property="og:url" content={canonicalUrl} />
-<meta property="og:image" content={new URL(image, Astro.site ?? Astro.url).toString()} />
+<meta property="og:image" content={Astro.site ? new URL(image, Astro.site).toString() : image} />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />
 <meta name="twitter:description" content={description} />
