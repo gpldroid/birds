@@ -7,7 +7,8 @@ interface Props {
   canonical?: string;
 }
 const { title, description, image = "/images/og-cover.svg", type = "website", canonical } = Astro.props;
-const canonicalUrl = canonical ? new URL(canonical, Astro.site ?? Astro.url).toString() : Astro.url.href;
+const canonicalPath = canonical ?? Astro.url.pathname;
+const canonicalUrl = Astro.site ? new URL(canonicalPath, Astro.site).toString() : canonicalPath;
 const isArabic = Astro.url.pathname.startsWith("/ar/");
 const englishPath = isArabic ? (Astro.url.pathname.replace(/^\/ar/, "") || "/") : Astro.url.pathname;
 const arabicPath = `/ar${englishPath === "/" ? "/" : englishPath}`;
@@ -17,8 +18,8 @@ const arabicPath = `/ar${englishPath === "/" ? "/" : englishPath}`;
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <meta name="theme-color" content="#f7f8f4" />
 <link rel="canonical" href={canonicalUrl} />
-<link rel="alternate" hreflang="en" href={new URL(englishPath, Astro.site ?? Astro.url).toString()} />
-<link rel="alternate" hreflang="ar" href={new URL(arabicPath, Astro.site ?? Astro.url).toString()} />
+<link rel="alternate" hreflang="en" href={Astro.site ? new URL(englishPath, Astro.site).toString() : englishPath} />
+<link rel="alternate" hreflang="ar" href={Astro.site ? new URL(arabicPath, Astro.site).toString() : arabicPath} />
 <link rel="alternate" hreflang="x-default" href={new URL(englishPath, Astro.site ?? Astro.url).toString()} />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <meta property="og:type" content={type} />
