@@ -17,16 +17,34 @@ const currentPath = Astro.url.pathname;
     </button>
     <nav class="main-nav" id="primary-nav" aria-label="Main navigation">
       {navItems.map((item) => <a class:list={[{ active: currentPath === item.href }, "nav-link"]} href={item.href}>{item.label}</a>)}
+      <button class="theme-toggle" type="button" aria-label="Switch to dark theme" title="Toggle colour theme"><span class="theme-icon" aria-hidden="true">☾</span><span class="theme-label">Theme</span></button>
       <a class="nav-cta" href="/articles/">Explore stories <span aria-hidden="true">↗</span></a>
     </nav>
   </div>
 </header>
 <script>
-  const toggle = document.querySelector<HTMLButtonElement>(".menu-toggle");
+  const menuToggle = document.querySelector<HTMLButtonElement>(".menu-toggle");
   const nav = document.querySelector<HTMLElement>("#primary-nav");
-  toggle?.addEventListener("click", () => {
-    const expanded = toggle.getAttribute("aria-expanded") === "true";
-    toggle.setAttribute("aria-expanded", String(!expanded));
+  menuToggle?.addEventListener("click", () => {
+    const expanded = menuToggle.getAttribute("aria-expanded") === "true";
+    menuToggle.setAttribute("aria-expanded", String(!expanded));
     nav?.classList.toggle("is-open", !expanded);
+  });
+
+  const themeToggle = document.querySelector<HTMLButtonElement>(".theme-toggle");
+  const themeIcon = document.querySelector<HTMLElement>(".theme-icon");
+  const applyTheme = (theme: "light" | "dark") => {
+    document.documentElement.dataset.theme = theme;
+    if (themeIcon) themeIcon.textContent = theme === "dark" ? "☀" : "☾";
+    themeToggle?.setAttribute("aria-label", theme === "dark" ? "Switch to light theme" : "Switch to dark theme");
+  };
+  let savedTheme: string | null = null;
+  try { savedTheme = localStorage.getItem("birds-theme"); } catch { savedTheme = null; }
+  const initialTheme = savedTheme === "dark" || savedTheme === "light" ? savedTheme : (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+  applyTheme(initialTheme);
+  themeToggle?.addEventListener("click", () => {
+    const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+    applyTheme(nextTheme);
+    try { localStorage.setItem("birds-theme", nextTheme); } catch { /* Theme still works for this visit. */ }
   });
 </script>
