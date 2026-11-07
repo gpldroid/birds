@@ -11,16 +11,26 @@ const articleSchema = z.object({
   cover: z.string().url(),
   featured: z.boolean().default(false),
   readTime: z.number().int().positive().default(5),
-  tags: z.array(z.string()).default([])
+  tags: z.array(z.string()).default([]),
+  language: z.enum(["en", "ar"]).default("en")
 });
 
 const birdSchema = z.object({
   name: z.string(),
+  nameAr: z.string().default(""),
   scientificName: z.string(),
   family: z.string(),
   habitat: z.string(),
+  habitatAr: z.string().default(""),
+  diet: z.string().default("Not specified"),
+  dietAr: z.string().default("غير محدد"),
   image: z.string().url(),
-  summary: z.string()
+  summary: z.string(),
+  summaryAr: z.string().default(""),
+  category: z.enum(["nature", "migratory", "ornamental", "raptors", "waterbirds", "garden"]).default("nature"),
+  conservationStatus: z.string().default("Not assessed"),
+  conservationSource: z.string().url().optional(),
+  popular: z.boolean().default(false)
 });
 
 const blog = defineCollection({
